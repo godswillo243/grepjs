@@ -1,0 +1,15 @@
+
+2026-03-14 09:00:01 INFO  server started on port 8080
+2026-03-14 09:00:05 INFO  GET /index.html 200 12ms user=ada
+2026-03-14 09:00:09 INFO  GET /login 200 8ms user=guest
+2026-03-14 09:00:14 INFO  POST /login 302 41ms user=grace
+2026-03-14 09:01:12 WARN  GET /search 200 1840ms user=ada slow response
+2026-03-14 09:01:30 ERROR POST /upload 500 31ms user=grace
+    cause: disk quota exceeded
+    path: /var/data/uploads
+2026-03-14 09:01:44 INFO  GET /index.html 200 9ms user=linus
+2026-03-14 09:02:03 INFO  GET /reports 200 77ms user=ada
+2026-03-14 09:02:20 WARN  GET /reports 200 2100ms user=grace slow response
+2026-03-14 09:03:00 ERROR GET /api/data 503 5ms user=ada
+    cause: upstream timeout
+2026-03-14 09:03:15 INFO  GET /health 200 2ms user=monitor

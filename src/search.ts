@@ -66,7 +66,6 @@ export async function searchFile(
           beforeLines.forEach((v) => {
             if (v.lineNumber !== lineNumber) outputLines.push(v);
           });
-          console.log(beforeLines);
           outputLines.push({ lineNumber, line });
           tailRemaining = Math.max(tailRemaining, showAfter);
         }
@@ -85,7 +84,7 @@ export async function searchFile(
   }
 
   // OUTPUTS
-  console.log(`>> ${GREEN}${matchCount}${RESET} matches found`);
+  console.log(`>> ${GREEN}${matchCount}${RESET} matches found for ${filePath}`);
 
   outputLines.forEach(({ line, lineNumber }) => {
     const prefix = showLineNumber ? `${GREEN}${lineNumber}${RESET} ` : "";

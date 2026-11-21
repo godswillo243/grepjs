@@ -1,5 +1,23 @@
+import path from "path";
 import { parseArguments } from "./cli.js";
 import { searchFile } from "./search.js";
+import fsPromises from "fs/promises";
+
+async function readDir(dirPath: string) {
+  const entries = await fsPromises.readdir(path.resolve(dirPath), {
+    withFileTypes: true,
+  });
+  const results: string[] = [];
+
+  for (const entry of entries) {
+    const fullPath = path.join(dirPath, entry.name);
+
+    if (entry.isDirectory()) {
+      results.push(...(await readDir(fullPath)));
+    } else results.push(fullPath);
+  }
+  return results;
+}
 
 async function main() {
   try {
@@ -14,17 +32,28 @@ async function main() {
       return;
     }
 
-    const { filePath, pattern, ...otherOpts } = opts;
+    const { filePath, folderPath, pattern, ...otherOpts } = opts;
 
-    if (!filePath || !pattern) {
+    if ((!filePath && !folderPath) || !pattern) {
       console.error(
         'Error: Usage: grepjs [flags] <pattern> <file>\n  use "grepjs -h" for help',
       );
       process.exitCode = 2;
       return;
     }
-
-    await searchFile({ filePath, pattern, ...otherOpts });
+    console.log({
+      folderPath,
+      filePath,
+    });
+    if (folderPath) {
+      const filePaths = await readDir(folderPath);
+      console.log(filePaths);
+      for (const filePath of filePaths) {
+        await searchFile({ filePath, pattern, ...otherOpts });
+      }
+    } else if (filePath) {
+      await searchFile({ filePath, pattern, ...otherOpts });
+    }
   } catch (error: any) {
     console.error(`${error.message}\n`);
   }

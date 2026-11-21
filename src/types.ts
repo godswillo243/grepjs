@@ -1,6 +1,7 @@
 export interface CliArgs {
-  pattern: string | undefined;
-  filePath: string | undefined;
+  pattern?: string;
+  filePath?: string;
+  folderPath?: string;
   showLineNumber: boolean;
   isCaseSensitive: boolean;
   showOnlyCount: boolean;

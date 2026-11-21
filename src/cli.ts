@@ -3,6 +3,7 @@ import type { CliArgs } from "./types.js";
 export function parseArguments(args: string[]): CliArgs {
   let pattern: string | undefined;
   let filePath: string | undefined;
+  let folderPath: string | undefined;
   let showLineNumber = true;
   let isCaseSensitive = false;
   let showOnlyCount = false;
@@ -61,8 +62,12 @@ export function parseArguments(args: string[]): CliArgs {
         }
         if (!pattern) {
           pattern = arg;
-        } else if (!filePath) {
-          filePath = arg;
+        } else if (!filePath || !folderPath) {
+          if (args.includes("-r")) {
+            folderPath = arg;
+          } else {
+            filePath = arg;
+          }
         } else {
           throw new Error(`Unexpected argument "${arg}"`);
         }
@@ -72,6 +77,7 @@ export function parseArguments(args: string[]): CliArgs {
   return {
     pattern,
     filePath,
+    folderPath,
     showLineNumber,
     isCaseSensitive,
     showOnlyCount,
